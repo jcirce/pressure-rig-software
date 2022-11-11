@@ -91,6 +91,7 @@ void control_tank_pressure(double p_actual, double p_desired, double hysteresis_
             pressure_control_state = 2;
           }
           pump_on_t0 = cur;
+          pressure_at_t0 = p_actual;
         }
         
         //If tank is above p_desired + hysteresis_amt, turn off pump (state 0)
