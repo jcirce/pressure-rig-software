@@ -51,14 +51,19 @@ class CommsController():
 if __name__ == "__main__":
     c = CommsController()
 
-    i=255
+    #i=255 #pressure = 0
+
     while True:
         time.sleep(0.5)
         c.append_command(b"R0%\n") #need "b" as part of string, interpret as raw bytes
-        #val = input for pressure
-        s = f"S1,A{i}%\n" #puts variable into command string
+
+        bit = float((input("enter 0-255 bit")))
+     
+        s = f"S1,A{bit}%\n" #puts variable into command string
+
         c.append_command(bytes(s, 'UTF-8'))# Interpret stringas bytes from utf-8 format
-        i-=1
+
         while not c.responseList.empty():
             a=c.responseList.get()
             print(a)
+
