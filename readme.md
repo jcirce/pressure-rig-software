@@ -34,15 +34,19 @@ python test.py
 > end program (control-c)
 > skip to _clean up dir_ section
 
+**NOTE:**
+Camera will not take commands unless you are clicked on the frame's view on the computer, ensure you are not typing in the terminal, but clicked on the camera frame
+
 5. Start Test
 Once camera in focus, use keyboard for commands
 - press _space bar_ to increase pressure
 - press _m_ key to take photo
 
-**NOTE:**
-Camera will not take commands unless you are clicked on the frame's view on the computer, ensure you are not typing in the terminal, but clicked on the camera frame
+6. reset arduino
+7. press e-stop
+8. close terminal (for now)
 
-6. Clean up dir
+7. Clean up dir
 - use file explorer (got to desktop/pressure-rig/software/data) to see that all the images are in correct directory and labelled properly (relabel as needed)
 - remove any dir/folders created with typos
 
