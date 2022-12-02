@@ -63,11 +63,11 @@ git status
 ```
 git add data/D20K4_1 
 ```
-5. check status again (if unsure)
+5. check status again (if unsure) 
+photos should show up as green, under "changes to be committed"
 ```
 git status
 ```
-photos should show up as green, under "changes to be committed"
 6. add commit message 
 ```
 git commit -m "jeannette adding photos"
