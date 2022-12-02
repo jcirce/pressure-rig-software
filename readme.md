@@ -1,3 +1,64 @@
+# Tube Testing Procedure
+## _Soft Robotics Thesis_
+
+> this procedure is a work in progress, 
+> please ask questions if something is unclear
+> last updated 12/2/22
+
+## 1. Plug tube in
+
+1. unplug hex mount from black pipe
+2. fasten mount to fastener in the tube
+3. plug hex mount in
+4. make sure tube stands up on black wall
+
+## 2. Prep Rig
+
+1. untwist E-stop
+2. plug in arduino
+3. reset arduino until tank is pressurized
+
+## 3. Run test.py software
+
+1. open command window on computer (open terminal)
+2. go to directory that test.py is in
+''' sh
+cd desktop/pressure-rig-software/src/python/util
+'''
+3. run script 
+''' sh
+python test.py
+'''
+4. script will prompt tube name, number, and test number
+> if mistake/typo is made, end program
+> skip to _clean up dir_ section
+
+5. Start Test
+Once camera in focus, use keyboard for commands
+- press _space bar_ to increase pressure
+- press _m_ key to take photo
+
+**NOTE:**
+Camera will not take commands unless you are clicked on the frame's view on the computer, ensure you are not typing in the terminal, but clicked on the camera frame
+
+6. Clean up dir
+- use file viewer to see that all the images are in correct directory and labelled properly (relabel as needed)
+- remove any dir/folders created with typos
+- 
+
+## 4. Push Photos to github
+
+
+
+
+
+
+
+
+
+
+
+
 -for each tube
 
 -for each change in pressure
