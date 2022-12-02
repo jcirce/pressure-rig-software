@@ -13,11 +13,12 @@ if not cap.isOpened():
 
 counter = 0 #test only runs for set pressure amount
 
+#these values from 0-25 settings on regulator
 bit = np.array([255, 160, 113,  87,  69,  56,  47,  40,   34,   29,   25,   23])
-psi = np.array([2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.1, 12.7])
+psi = np.array([2.0, 3.0, 4.0, 5.0, 6.0, 7.1, 8.0, 9.0, 10.0, 11.0, 12.1, 12.7])
 kai = np.size(bit) - 1 #times want to take photos
 
-tube = Tube()
+tube = Tube() #asks for name, number, test number
 print(tube)
 
 parent_dir = "/Users/student/desktop/pressure-rig-software/data"
@@ -26,7 +27,7 @@ path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in
 print("dir made for {}".format(dir))
 
-print("press spacebar to start")
+print("press spacebar to start") #sends 255 bit
 
 while True:
     #capture frame by frame
@@ -41,23 +42,21 @@ while True:
     k = cv2.waitKey(1)
     #print(k) #prints int of key pressed
 
-    if k == 32:
-        #print("up pressure")
+    if k == 32: #space pressed
         #print("sending {} bit".format(bit[counter]))
         c.append_command(b"R0%\n")
-        s = f"S1,A{bit[counter]}%\n"
+        s = f"S1,A{bit[counter]}%\n" 
         c.append_command(bytes(s, 'UTF-8'))
         a = c.responseList.get()
         #print("sent command {}".format(a))
         print("press m to take photo")
 
-    if k == 109:
-        #print("take photo")
+    if k == 109: #m pressed
         img_name = "{}_psi_{}.png".format(tube, psi[counter])
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
         print("press spacebar to increase pressure")
-        counter += 1
+        counter += 1 #moves to next pressure
 
         if counter > kai:
                 print("end of test")
@@ -70,5 +69,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-exit()
 
