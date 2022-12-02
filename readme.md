@@ -7,20 +7,20 @@
 
 ## 1. Plug tube in
 
-1. unplug hex mount from black pipe
-2. fasten mount to fastener in the tube
-3. plug hex mount in
+1. unplug fastener attachment piece from black pressure pipe
+2. screw on attachment to fastener in the tube
+3. plug attachment into black pipe thru hole in metal triangle
 4. make sure tube stands up on black wall
 
 ## 2. Prep Rig
 
 1. untwist E-stop
-2. plug in arduino
-3. reset arduino until tank is pressurized
+2. plug in arduino with gray cord
+3. reset arduino until tank is pressurized (little red putton left of plug)
 
 ## 3. Run test.py software
 
-1. open command window on computer (open terminal)
+1. open command prompt on computer (open terminal)
 2. go to directory that test.py is in
 ``` sh
 cd desktop/pressure-rig-software/src/python/util
@@ -31,7 +31,7 @@ python test.py
 ```
 4. script will prompt tube name, number, and test number
 > if mistake/typo is made, 
-> end program
+> end program (control-c)
 > skip to _clean up dir_ section
 
 5. Start Test
@@ -43,7 +43,7 @@ Once camera in focus, use keyboard for commands
 Camera will not take commands unless you are clicked on the frame's view on the computer, ensure you are not typing in the terminal, but clicked on the camera frame
 
 6. Clean up dir
-- use file viewer to see that all the images are in correct directory and labelled properly (relabel as needed)
+- use file explorer (got to desktop/pressure-rig/software/data) to see that all the images are in correct directory and labelled properly (relabel as needed)
 - remove any dir/folders created with typos
 
 ## 4. Push Photos to github
@@ -76,6 +76,7 @@ git commit -m "jeannette adding photos"
 ```
 git push origin devel
 ```
+8. should see updated on github page
 
 
 
