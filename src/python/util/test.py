@@ -66,7 +66,6 @@ while True:
         #press q to close camera
         break
 
-
 cap.release()
 cv2.destroyAllWindows()
 

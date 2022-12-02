@@ -6,7 +6,7 @@ import time
 
 class CommsController():
     def __init__(self):
-        self.serialThread = Thread(target=self.handle_comms)
+        self.serialThread = Thread(target=self.handle_comms, daemon=True)
         # self.process = Process(target=self.handle_comms)
         self.commandList = Queue() # List of commands to send to arduino
         self.responseList = Queue() # List of responses from arduino
