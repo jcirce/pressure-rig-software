@@ -20,7 +20,7 @@ kai = np.size(bit) - 1 #times want to take photos
 tube = Tube()
 print(tube)
 
-parent_dir = "/Users/student/desktop/pressure-rig-software/src/python/util"
+parent_dir = "/Users/student/desktop/pressure-rig-software/data"
 dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in
