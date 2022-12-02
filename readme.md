@@ -31,7 +31,7 @@ python test.py
 ```
 4. script will prompt tube name, number, and test number
 > if mistake/typo is made, 
-> end program (control-c)
+> end program (control c)
 > skip to _clean up dir_ section
 
 **NOTE:**
@@ -42,12 +42,12 @@ Once camera in focus, use keyboard for commands
 - press _space bar_ to increase pressure
 - press _m_ key to take photo
 
-6. reset arduino
-7. press e-stop
-8. close terminal (for now)
+6. After test: reset arduino to release pressure
 
-7. Clean up dir
-- use file explorer (got to desktop/pressure-rig/software/data) to see that all the images are in correct directory and labelled properly (relabel as needed)
+7. Press e-stop 
+
+7. Clean up dir (if needed)
+- use file explorer (got to desktop/pressure-rig-software/data) to see that all the images are labelled properly (relabel as needed)
 - remove any dir/folders created with typos
 
 ## 4. Push Photos to github
@@ -81,6 +81,7 @@ git commit -m "jeannette adding photos"
 git push origin devel
 ```
 8. should see updated on github page
+<<<<<<< Updated upstream
 
 
 
@@ -170,3 +171,5 @@ list of components to still buy
 
 csv structure
 - tube name, pressure, data1, data2, ..., photo-file-name.png
+=======
+>>>>>>> Stashed changes
