@@ -25,7 +25,7 @@ SPISettings settings(80000, MSBFIRST, SPI_MODE0);
 
 //Pressure rig variables
 int pressure_control_state = 0;
-double dpdt = 0.05; //The change in pressure per unit time allowed, less than this constitutes an error in the system
+double dpdt = 0.025; //The change in pressure per unit time allowed, less than this constitutes an error in the system
 unsigned long pump_on_t0;
 double pressure_at_t0;
 
@@ -69,7 +69,7 @@ void loop() {
   
   //voltage to tank pressure is linear with an offset
   //voltage of 1.4 gives 26 psi in tank on gague (could be 2 psi high)
-  control_tank_pressure(comms.data.p_tank_voltage, 1.4, 0.05); 
+  control_tank_pressure(comms.data.p_tank_voltage, 2.15, 0.05); 
 
   //Send DIGI Pot
   digitalPot.DigitalPotSetWiperPosition(potNum, comms.data.p_reg_command);
@@ -104,7 +104,7 @@ void control_tank_pressure(double p_actual, double p_desired, double hysteresis_
         // Currently hardcoded delta time is 0.5 seconds (500_000 us)
         if ( (cur - pump_on_t0) > (0.5 * 1000000) ) //Check if delta time has passed
         {
-          if ((p_actual - pressure_at_t0) < 0.05) //If the change in voltage of the mpx2200 is < 0.05, emergency stop
+          if ((p_actual - pressure_at_t0) < dpdt) //If the change in voltage of the mpx2200 is < dpdt, emergency stop
           {
             pressure_control_state = 2;
           }
