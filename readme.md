@@ -37,8 +37,8 @@ python test.py
 **NOTE:**
 Camera will not take commands unless you are clicked on the frame's view on the computer, ensure you are not typing in the terminal, but clicked on the camera frame
 
-5. Start Test
-Once camera in focus, use keyboard for commands
+5. Start Test (click on camera window)
+Once camera in focus, and tube has settled, use keyboard for commands
 - press _space bar_ to increase pressure
 - press _m_ key to take photo
 
