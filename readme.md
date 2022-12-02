@@ -163,7 +163,7 @@ directory hierarchy
 list of components to still buy
 	- force sensor
 	- blow off valve for 45? psi
-	- differential ADC (13 bit minimum)
+	- differential ADC (13 bit minimum) **
 	- perf board
 	- digital potentiometer
 	- e-stop button
