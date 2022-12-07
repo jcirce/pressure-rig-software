@@ -1,0 +1,5 @@
+pressure rig notes 12/7
+
+- replace AC power supply with sealed lead-acid battery
+- high power relay and mosfet for engaging pump
+- add charger for sealed lead acid battery. 
