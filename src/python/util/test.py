@@ -13,9 +13,9 @@ if not cap.isOpened():
 
 counter = 0 #test only runs for set pressure amount
 
-#these values from 0-25 settings on regulator
-bit = np.array([255, 160, 113,  87,  69,  56,  47,  40,   34,   29,   25,   23])
-psi = np.array([2.0, 3.0, 4.0, 5.0, 6.0, 7.1, 8.0, 9.0, 10.0, 11.0, 12.1, 12.7])
+#these values from jan/11 map
+bit = np.array([255, 200, 125,  90,  68,  55,  44,  35,  30,   25,   22,   18,   15,   14,   13, 12])
+psi = np.array([1.7, 2.0, 3.1, 4.0, 5.1, 6.0, 7.0, 8.2, 9.1, 10.1, 10.9, 12.1, 13.2, 13.6, 14.2, 14.6])
 kai = np.size(bit) - 1 #times want to take photos
 
 tube = Tube() #asks for name, number, test number
