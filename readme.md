@@ -18,7 +18,7 @@
 2. plug in arduino with gray cord
 3. reset arduino until tank is pressurized (little red putton left of plug)
 
-##if there is a leak
+## if there is a leak
 - you will probably hear it in one of two ways, either a stream of air coming out from somewhere, or the regulator will not stop making noise (its a very repetitive honking noise)
 - use bubble sauce with a toothpick to identify where the leak is coming from
 - check connections, starting with tube to the metal barb
