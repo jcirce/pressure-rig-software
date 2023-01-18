@@ -7,9 +7,9 @@
 
 ## 1. Plug tube in
 
-1. unplug fastener attachment piece from black pressure pipe
-2. screw on attachment to fastener in the tube
-3. plug attachment into black pipe thru hole in metal triangle
+1. unplug old tube or the white tube loop
+2. screw on attachment in the tube to the male threaded end
+*make sure tight with pliers
 4. make sure tube stands up on black wall
 
 ## 2. Prep Rig
@@ -17,6 +17,12 @@
 1. untwist E-stop (until regulator turns on)
 2. plug in arduino with gray cord
 3. reset arduino until tank is pressurized (little red putton left of plug)
+
+##if there is a leak
+- you will probably hear it in one of two ways, either a stream of air coming out from somewhere, or the regulator will not stop making noise (its a very repetitive honking noise)
+- use bubble sauce with a toothpick to identify where the leak is coming from
+- check connections, starting with tube to the metal barb
+- once the source of the leak is found, press E-stop and fix the problem. 
 
 ## 3. Run test.py software
 
