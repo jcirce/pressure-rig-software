@@ -45,6 +45,8 @@ Camera will not take commands unless you are clicked on the frame's view on the 
 
 5. Start Test (click on camera window)
 Once camera in focus, and tube has settled, use keyboard for commands
+- press _space bar_ to start test
+follow instructions on the terminal (while still clicked on the camera window). 
 - press _space bar_ to increase pressure
 - press _m_ key to take photo
 
@@ -57,7 +59,7 @@ Once camera in focus, and tube has settled, use keyboard for commands
 - remove any dir/folders created with typos
 
 ## 4. Push Photos to github
-1. close file viewer, open terminal, cd into pressure-rig-software
+1. close file viewer and termnial, re-open terminal, cd into pressure-rig-software
 ```
 cd desktop/pressure-rig-software
 ```
@@ -71,19 +73,19 @@ git status
 ```
 4. you should see "untracked files", these will be the new folders with the new photos added (dont want to add each photo individually, just add the whole folder)
 ```
-git add data/D20K4_1 
+git add 
 ```
 5. check status again (if unsure) 
 photos should show up as green, under "changes to be committed"
 ```
 git status
 ```
-6. add commit message 
+6. add commit message- something like "jeannette adding photos"
 ```
-git commit -m "jeannette adding photos"
+git commit -m "
 ```
 7. push photos to github
 ```
 git push origin devel
 ```
-8. should see updated on github page
+8. should see updated on github page in data folder
