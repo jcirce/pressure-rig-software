@@ -114,9 +114,11 @@ ylabel('0-255 pot input')
 xlabel('Pressure [psi]') 
 hold on
 
-
-
-p = polyfit(psi, bits, 7);
+p = polyfit(psi, bits, 6);
 
 fit = polyval(p,psi);
 plot(psi, fit, 'LineWidth',3)
+
+
+
+
