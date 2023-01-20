@@ -12,11 +12,15 @@ if not cap.isOpened():
     exit()
 
 counter = 0 #test only runs for set pressure amount
+photocounter = 0 
 
 #these values from jan/11 map
-bit = np.array([255, 200, 125,  90,  68,  55,  44,  35,  30,   25,   22,   18,   15,   14,   13,   12,   13,   14,   15,   18,   22,   25,  30,  35,  44,  55,  68,  90, 125, 200, 255])
-psi = np.array([1.7, 2.0, 3.1, 4.0, 5.1, 6.0, 7.0, 8.2, 9.1, 10.1, 10.9, 12.1, 13.2, 13.6, 14.2, 14.6, 14.2, 13.6, 13.2, 12.1, 10.9, 10.1, 9.1, 8.2, 7.0, 6.0, 5.1, 4.0, 3.1, 2.0, 1.7])
-kai = np.size(bit) - 1 #times want to take photos
+bit = np.array([255, 200, 125,  90,  68,  55,  44,  35,  30,   25,   22,   18,   15,   14,   13,   12]) #16 commands 0-15 index
+psi = np.array([1.7, 2.0, 3.1, 4.0, 5.1, 6.0, 7.0, 8.2, 9.1, 10.1, 10.9, 12.1, 13.2, 13.6, 14.2, 14.6])
+
+kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have,                 15
+
+up = True #tracking if pressure increasing or not
 
 tube = Tube() #asks for name, number, test number
 print(tube)
@@ -52,15 +56,24 @@ while True:
         print("press m to take photo")
 
     if k == 109: #m pressed
-        img_name = "{}_psi_{}.png".format(tube, psi[counter])
+        img_name = "{}_psi_{}_{}.png".format(tube, psi[counter], photocounter)
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
         print("press spacebar to increase pressure")
-        counter += 1 #moves to next pressure
+        photocounter += 1
 
-        if counter > kai:
-                print("end of test")
-                break
+        if counter == kai: #reached max index
+            up = False
+            print("now going backwards")
+
+        if up:
+            counter += 1 #increasing pressure
+        else:
+            counter -= 1 #decrease pressure
+        
+        if counter == 0 and up == False:
+            print("test done")
+            break
 
     if k == 113:
         #press q to close camera
