@@ -56,10 +56,10 @@ while True:
         print("press m to take photo")
 
     if k == 109: #m pressed
-        img_name = "{}_psi_{}_{}.png".format(tube, psi[counter], photocounter)
+        img_name = "{}_{}_psi{}.png".format(tube, photocounter, psi[counter])
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
-        print("press spacebar to increase pressure")
+        print("press spacebar to change pressure")
         photocounter += 1
 
         if counter == kai: #reached max index
