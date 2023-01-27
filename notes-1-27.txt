@@ -34,8 +34,8 @@ week 2 (by 2/10)
                 - matlab graphs exported as **file type** 
 
             - bio inspiration compared to our actuator (for first page?) [photos] //owner?
-            - fabrication [diagram] //owner?
-            - fabrication [photos] //owner?
+            - fabrication [diagram] //Ruslana
+            - fabrication [photos] //Ruslana
             - testing setup for curvature [photos] //owner?
             - testing setup for blocking force [photos] //owner?
             - pressure rig setup [diagram] //mike 
