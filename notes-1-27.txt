@@ -1,0 +1,79 @@
+https://ieee-iros.org/
+2023 Theme: 'The Next Generation of Robotics'
+
+Paper
+- have on github for now 
+- will be uploading to overleaf 
+- right now its state is super raw/rough
+
+today/this weekend
+- upload sources to zotero so that bibtex file can be generated //jeannette
+- inventory/checklist of exactly what silicone castings needed  //owner
+- assign ownership for figures
+
+have 4 weeks, can we have draft in 2?
+
+week 1 (by 2/3)   
+        - pressure values/bit commands set in yaml file for each material  //Isaiah
+        - load cell calibrated, integrated into test script with hysteresis //Jeannette
+        - test.py scripts finalized for each test //Jeannette
+        - all silicone tubes capped (based on checklist) //Claire/Sophia
+        - line detection script exports file of coordinates of inner and outer line done //Joya
+        - code to take in folder of photos and export coords all at once done //Joya 
+        - calculations matlab outlined //Jeannette
+        - modelling matlab (neo-hookean bending moments) matlab done //Jeannette
+        - FEA simulation for one silicone (dragon 20?) //Randel
+        - video :o
+
+week 2 (by 2/10) 
+        - data taken for each silicone //owner?
+        - calculations matlab done //Jeannette
+
+        - VERSION 1 FIGURES
+            success:
+                - sample photos decided on for photo figures
+                - matlab graphs exported as **file type** 
+                - color brewer for colorblindness accessibility 
+
+            - bio inspiration compared to our actuator (for first page?) [photos] //owner?
+            - fabrication [diagram] //Ruslana
+            - fabrication [photos] //Ruslana
+            - testing setup for curvature [photos] //owner?
+            - testing setup for blocking force [photos] //owner?
+            - pressure rig setup [diagram] //
+            - cv process //joya
+            - model neo-hookean const curvature v pressure (for each silicone) //jeannette
+            - model blocking force v pressure (for each silicone) //jeannette
+            - FEA simulation //Randel
+
+            (results figs subject to change)
+            - non constant curvature over pressure [photos] //owner?
+            - non constant curvature over pressure [data] //jeannette
+            - blocking force over pressure [photos] //owner?
+            - blocking force over pressure [data] //jeannette
+            - non-axial or hoop strain over length over pressure [photos] //owner?
+            - non-axial or hoop strain over length over pressure [data] //jeannette
+
+        - COMPLETE PAPER DRAFT done
+            - success: 
+                - all sources attached to a sentence
+                - each section has something in it 
+                - conclusions/abstract drafted 
+                - all figures have at least version 1
+                - under 6 pages (with bibliography)
+
+week 3 (by 2/17)
+     - send paper to various advisors, asking questions reviewers will ask 
+        - all figures get updated 
+            - success: 
+                - looks clear when printed in black and white
+                - more data added to data figures 
+        - photos finalized (my dad is in town presidents day weekend and can help photoshop)
+
+
+week 4 (by 2/24) 
+        - writing down to 6 pages? 
+        - send final drafts to advisors
+
+Monday 2/27 submit? 
+Video deadline after...
