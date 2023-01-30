@@ -1,14 +1,12 @@
-#https://stackoverflow.com/questions/64085745/get-the-contour-outline-from-a-png-image-with-the-correct-edges
-
 import cv2
 import numpy as np
 import os 
 
 from matplotlib import pyplot as plt
 
-#crop
+#cropping done manually right now, not so great to be doing it this way 
 def crop(img):
-    cropimg = img[500:, 0:360]
+    cropimg = img[0:360, 80:965]
     return cropimg
 
 testfold = 'data/D20K5_withgrid1/'
@@ -17,7 +15,7 @@ for path in os.listdir(testfold):
     testimpath = testfold+path
     print(testimpath)
 
-    img = cv2.imread(testimpath, cv2.IMREAD_UNCHANGED)
+    img = crop(cv2.imread(testimpath, cv2.IMREAD_UNCHANGED))
     img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -26,14 +24,10 @@ for path in os.listdir(testfold):
 
     contours, hierachy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    plt.imshow(mask)
-    plt.show()
-    plt.waitforbuttonpress
-
     cv2.drawContours(img, contours, -1, (0,255,0),3)
     cv2.imshow('Contours', img)
     cv2.waitKey(0)
-    #break
+    
 
     # images = [mask]
 
