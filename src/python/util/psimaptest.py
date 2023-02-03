@@ -27,12 +27,12 @@ kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands 
 tube = Tube() #asks for name, number, test number
 print(tube)
 
-parent_dir = "/Users/student/desktop/pressure-rig-software/data"
+parent_dir = "/Users/student/desktop/pressure-rig-software/data/"
 dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in
 print("dir made for {}".format(dir))
-#print(path)
+print("path made for {}".format(path))
 
 print("press spacebar to start") #sends 255 bit
 
@@ -62,11 +62,13 @@ while True:
     if k == 109: #m pressed
         img_name = "{}.png".format(bit[counter])
         print("counter is {}".format(counter))
+        print("\\")
         
         cv2.imwrite(os.path.join(path, img_name), frame)
-        image = os.path.join(path, img_name)
+        image = os.path.join(path, img_name).replace("\\", "/")
+        print("{} written".format(image))
         get_digits(image)
-        print("{} written".format(img_name))
+        
         counter += 1
         print("press spacebar to change pressure")
         #photocounter += 1
@@ -92,6 +94,10 @@ while True:
     if k == 113:
         #press q to close camera
         break
+
+    #f = open("psimap.txt")
+    #f = write.()
+    #f.close
 
 cap.release()
 cv2.destroyAllWindows()

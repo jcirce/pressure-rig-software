@@ -4,17 +4,18 @@ import imutils
 import cv2 
 from numpy import reshape
 import numpy as np
-#from Seg7 import Segments
+
 
 DIGITS_LOOKUP = {
 	(1, 1, 1, 0, 1, 1, 1): 0,
     (1, 0, 1, 0, 1, 0, 1): 0,
     (1, 0, 1, 0, 1, 1, 1): 0, #Experimental Key
-    (1, 1, 1, 0, 1, 0, 1): 0,
     (0, 0, 1, 1, 1, 0, 1): 1,
-	(0, 0, 1, 0, 0, 1, 0): 1,
+    (0, 0, 1, 1, 1, 0, 0): 1,
+	(0, 0, 1, 0, 0, 1, 0): 1, #Real 1 
     (0, 0, 1, 1, 0, 0, 1): 1, #Experimental Key 
-    (0, 0, 1, 1, 1, 0, 0): 1, #Experimental
+    (0, 0, 1, 0, 0, 0, 1): 1, #Experimental 
+    (0, 0, 1, 0, 0, 0, 0): 1, #Experimental Key
 	(1, 0, 1, 1, 1, 0, 1): 2,
 	(1, 0, 1, 1, 0, 1, 1): 3,
 	(0, 1, 1, 1, 0, 1, 0): 4,
@@ -23,13 +24,11 @@ DIGITS_LOOKUP = {
     (1, 0, 0, 1, 1, 1, 1): 6,
 	(1, 0, 1, 0, 0, 1, 0): 7,
     (1, 1, 1, 0, 0, 1, 0): 7,
-    (1, 1, 1, 1, 0, 1, 0): 7,
 	(1, 1, 1, 1, 1, 1, 1): 8,
     (1, 1, 1, 1, 1, 0, 1): 8,
     (1, 0, 1, 1, 1, 1, 1): 8,
 	(1, 1, 1, 1, 0, 1, 1): 9,
     (1, 1, 1, 1, 0, 0, 1): 9,
-    (1, 0, 1, 1, 1, 1, 0): 9,
     (0, 0, 0, 0, 0, 0, 0): -1 #error/unknown number  
 }
 
@@ -47,11 +46,14 @@ def scale_up(img):
 
 #Note: imread loads only ONE image at a time right now
 #Note 2: Could put this in a loop but need to figure out how to load multiple images just taken 
-def get_digits(imag): 
-    image = cv2.imread(imag)
-    cv2.imshow("Image",image)
-    cv2.waitKey(0)
+def get_digits(str_img): 
+    
     #image = imutils.resize(image, height = 500) #Resizes the Image
+    image = cv2.imread(str_img)
+
+    
+    cv2.imshow("nooo", image)
+    cv2.waitKey(0)
     image = scale_up(image)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -76,49 +78,8 @@ def get_digits(imag):
     
     warped = four_point_transform(gray,dispaly.reshape(4,2))
     output = four_point_transform(image,dispaly.reshape(4,2))
-    # cv2.imshow("Output", output)
-    # cv2.waitKey(0)
-
-    '''
-        lab = cv2.cvtColor(output, cv2.COLOR_BGR2LAB)
-        l,a,b = cv2.split(lab)
-
-        cv2.imshow("lab", lab)
-        cv2.waitKey(0)
-
-        kernel = np.ones((5,5), np.uint8)
-
-        # threshold params
-        low = 165
-        high = 200
-        iters = 3
-
-        # make copy
-        copy = b.copy()
-
-        thresh = cv2.inRange(copy, low, high)
-
-        # dilate
-        for a in range(iters):
-            thresh = cv2.dilate(thresh, kernel)
-
-        # erode
-        for a in range(iters):
-            thresh = cv2.erode(thresh, kernel)
-
-        # show image
-        cv2.imshow("thresh", thresh)
-        #cv2.imwrite("threshold.jpg", thresh)
-        
-    '''
-
-    '''
-
-    img2 = cv2.imread("opentest.png")
-    output1 = four_point_transform(img2,dispaly.reshape(4,2))
-    cv2.imshow("Image2", output1)
+    cv2.imshow("Output", output)
     cv2.waitKey(0)
-    '''
 
     thresh = cv2.threshold(warped, 0,255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
@@ -145,12 +106,6 @@ def get_digits(imag):
         # cv2.waitKey(0)
 
 
-    '''cv2.imwrite('savedImage.jpg', thresh)
-
-    img = Image.open('savedImage.jpg')
-    inv_img = ImageChops.invert(img)
-    inv_img.show()'''
-
 
     #draws the contours around the number 
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -171,6 +126,7 @@ def get_digits(imag):
         for point in contour:
             point = point[0]
             x, y = point
+
             if x < left:
                 left = x
             if x > right:
@@ -184,19 +140,48 @@ def get_digits(imag):
         bounds.append([tl, br])
 
     # crop out each number
+    tl_val = []
     digits = []
     cuts = []
+    Make_num = []   
     number = 0
     for bound in bounds:
         tl, br = bound
         cut_img = thresh[tl[1]:br[1], tl[0]:br[0]]
+        
+        
         #can do a append if it is big enough 
         (Hei,Wid) = cut_img.shape
         #print(Hei,Wid) 
+        #sort tl[1] in order. Think these are the orders of the numbers read from right to left 
         if Wid >= 15 and (Hei>= 60):
+            #print(tl,br)
             cuts.append(cut_img)
+            tl_val.append(tl[1])
+           
+    
         number += 1
-         
+
+    '''for i in range(len(tl_val) -1):
+        if tl_val[i] > tl_val[i+1]:
+                cv2.imshow("0", cuts[i])
+                cv2.imshow("1", cuts[i+1])
+                cv2.waitKey(0)
+                dummy = cuts[i]
+                cuts[i] = cuts[i+1]
+                cuts[i+1] = dummy
+                cv2.imshow("0", cuts[i])
+                cv2.imshow("1", cuts[i+1])
+                cv2.waitKey(0)'''
+
+
+
+
+
+    
+
+
+    #cuts = contours.sort_contours(cuts, method="left-to-right")[0]     
     
     for c in cuts:
         #roi = cuts[c]
@@ -226,14 +211,12 @@ def get_digits(imag):
         on = [0] * len(segments) # creates a list of 7
  
         
-
-        
         for (i, ((xA, yA), (xB, yB))) in enumerate(segments):
             segROI = c[yA:yB, xA:xB]
             total = cv2.countNonZero(segROI)
             area = (xB - xA) * (yB - yA)
-            cv2.imshow("Num" + str(i), c)
-            cv2.waitKey(0)
+            # cv2.imshow("Num" + str(i), c)
+            # cv2.waitKey(0)
             
             
             
@@ -247,58 +230,49 @@ def get_digits(imag):
 
             if  det > 0.5:
                 on[i]= 1
+
+            h1, w1 = c.shape[:2]
+            if w1 < 0.5 * h1:
+                digit = 1
+
                 
-        
-    
         digit = DIGITS_LOOKUP[tuple(on)]
         digits.append(digit)
-        print(digit)
-        Make_num = []
+        #print(digit)
+
         Make_num.append(digit)
-
-        for x in range(len(Make_num)):
-            pass 
-
-
-
-
-
         
 
-
+        # for x in range(len(Make_num)):
+        #     pass 
 
         # for i in digits:
         #     print(digits[i])
         
 #sort so contours with bigger areas are at the front of the list 
 # find cutoff so they won't get accepted 
-        
+    num = 0
+    final_num = 0
+    c = 1
+    #print((Make_num))
+    for i in range(len(Make_num)):
+        num = Make_num.pop()
+        final_num = (num * c) + final_num
+        c = c * 10
 
+    
+    psi_reading = final_num/10
+    kpa_reading = psi_reading * 6.89476
+    return i, psi_reading, kpa_reading                                                                                     
+                  
 
 #---------------------------------------------------------------------------------------------------------------------#
-    '''
-    model = Segments()
-    index = 0
-    
-    for x in range(len(cuts)):
-        # save image
-        #cv2.imwrite(str(index) + "_" + str(number) + ".jpg", cut)
 
-        # process
-        model.digest(cuts[x])
-        number = model.getNum() #THIS IS THING WE PASS TO OTHER PROGRAM 
-
-        #showing values guessed by the system 
-        print(number)
-        cv2.imshow(str(index), cuts[x])
-        cv2.waitKey(0)
-    cv2.imshow("contours", output)
-    cv2.waitKey(0)
-    '''
-    
 
 def main():
-    get_digits()
+   
+   get_digits()
+   #print(index, psi, kpa)
 
 if __name__ == "__main__":
     main()
