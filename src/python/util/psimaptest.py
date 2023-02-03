@@ -11,6 +11,7 @@ cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("cannot open camera")
     exit()
+f = open("psimap.txt", "a")
 
 counter = 0 #test only runs for set pressure amount
 photocounter = 0 
@@ -67,7 +68,8 @@ while True:
         cv2.imwrite(os.path.join(path, img_name), frame)
         image = os.path.join(path, img_name).replace("\\", "/")
         print("{} written".format(image))
-        get_digits(image)
+        psi, kpa = get_digits(image)
+        f.write("{} , {} , {} \n".format(bit[counter], psi, kpa))
         
         counter += 1
         print("press spacebar to change pressure")
@@ -98,6 +100,6 @@ while True:
     #f = open("psimap.txt")
     #f = write.()
     #f.close
-
+f.close()
 cap.release()
 cv2.destroyAllWindows()
