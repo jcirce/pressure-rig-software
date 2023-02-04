@@ -5,9 +5,15 @@ import os
 from setup import Tube
 from Digit_Rec1 import get_digits
 import time 
+from pynput.keyboard import Key,Controller 
+
+
+
 
 c = CommsController() 
 cap = cv2.VideoCapture(0)
+keyboard = Controller()
+
 
 if not cap.isOpened():
     print("cannot open camera")
@@ -37,7 +43,7 @@ print("dir made for {}".format(dir))
 print("path made for {}".format(path))
 
 print("press spacebar to start") #sends 255 bit
-
+ 
 while True:
     #capture frame by frame
     ret, frame = cap.read()
@@ -52,8 +58,16 @@ while True:
     k = cv2.waitKey(1)
     #print(k) #prints int of key pressed
     #time.sleep(6)
+    if True: 
+        keyboard.press(Key.space)
+        time.sleep(2)
+        keyboard.release(Key.space)
+    
+
+    
     if k == 32: #space pressed
         print("sending {} bit".format(bit[counter]))
+
         c.append_command(b"R0%\n")
         s = f"S1,A{bit[counter]}%\n" 
         c.append_command(bytes(s, 'UTF-8'))

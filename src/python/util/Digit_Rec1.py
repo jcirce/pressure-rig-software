@@ -16,14 +16,21 @@ DIGITS_LOOKUP = {
     (0, 0, 1, 1, 0, 0, 1): 1, #Experimental Key 
     (0, 0, 1, 0, 0, 0, 1): 1, #Experimental 
     (0, 0, 1, 0, 0, 0, 0): 1, #Experimental Key
-	(1, 0, 1, 1, 1, 0, 1): 2,
+    (0, 0, 1, 1, 0, 0, 0): 1, #Experimental Key 
+    (0, 0, 1, 0, 1, 0, 1): 1, #Experimental Key
+    (0, 0, 1, 0, 1, 0, 0): 1, #Experimental Key
+    (1, 0, 1, 0, 0, 0, 1): 1, #Experimental Key
+ 	(1, 0, 1, 1, 1, 0, 1): 2,
 	(1, 0, 1, 1, 0, 1, 1): 3,
+    (1, 0, 1, 1, 0, 0, 1): 3,
 	(0, 1, 1, 1, 0, 1, 0): 4,
 	(1, 1, 0, 1, 0, 1, 1): 5,
 	(1, 1, 0, 1, 1, 1, 1): 6,
     (1, 0, 0, 1, 1, 1, 1): 6,
+    (0, 1, 0, 0, 0, 1, 0): 6, #VERY EXPERIMENTAL 
 	(1, 0, 1, 0, 0, 1, 0): 7,
     (1, 1, 1, 0, 0, 1, 0): 7,
+    (1, 1, 1, 0, 0, 0, 0): 7, 
 	(1, 1, 1, 1, 1, 1, 1): 8,
     (1, 1, 1, 1, 1, 0, 1): 8,
     (1, 0, 1, 1, 1, 1, 1): 8,
@@ -33,7 +40,7 @@ DIGITS_LOOKUP = {
 }
 
 def scale_up(img):
-    scale_percent = 227 # percent of original size
+    scale_percent = 227 # change num to scale up 
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
     dim = (width, height)
@@ -50,10 +57,13 @@ def get_digits(str_img):
     
     #image = imutils.resize(image, height = 500) #Resizes the Image
     image = cv2.imread(str_img)
+    # cv2.imshow("Work", image)
+    # cv2.waitKey(0)
+    
 
     
-    cv2.imshow("nooo", image)
-    cv2.waitKey(0)
+    # cv2.imshow("nooo", image)
+    # cv2.waitKey(0)
     image = scale_up(image)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -78,8 +88,8 @@ def get_digits(str_img):
     
     warped = four_point_transform(gray,dispaly.reshape(4,2))
     output = four_point_transform(image,dispaly.reshape(4,2))
-    cv2.imshow("Output", output)
-    cv2.waitKey(0)
+    # cv2.imshow("Output", output)
+    # cv2.waitKey(0)
 
     thresh = cv2.threshold(warped, 0,255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
@@ -88,7 +98,7 @@ def get_digits(str_img):
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
     #thresh = ~thresh
 
-    iters = 4
+    iters = 3
 
 
     # cv2.imshow("thresh2", thresh)
@@ -126,7 +136,6 @@ def get_digits(str_img):
         for point in contour:
             point = point[0]
             x, y = point
-
             if x < left:
                 left = x
             if x > right:
@@ -148,16 +157,24 @@ def get_digits(str_img):
     for bound in bounds:
         tl, br = bound
         cut_img = thresh[tl[1]:br[1], tl[0]:br[0]]
+        # cv2.imshow("test", cut_img)
+        # cv2.waitKey(0)
         
         
         #can do a append if it is big enough 
         (Hei,Wid) = cut_img.shape
+        
         #print(Hei,Wid) 
         #sort tl[1] in order. Think these are the orders of the numbers read from right to left 
-        if Wid >= 15 and (Hei>= 60):
+        if Wid >= 15 and (Hei>= 83):
             #print(tl,br)
             cuts.append(cut_img)
             tl_val.append(tl[1])
+            # print(Hei)
+            # cv2.imshow("test", cut_img)
+            # cv2.waitKey(0)
+            
+
            
     
         number += 1
@@ -238,7 +255,7 @@ def get_digits(str_img):
                 
         digit = DIGITS_LOOKUP[tuple(on)]
         digits.append(digit)
-        #print(digit)
+        print(digit)
 
         Make_num.append(digit)
         
@@ -263,16 +280,17 @@ def get_digits(str_img):
     
     psi_reading = final_num/10
     kpa_reading = psi_reading * 6.89476
-    return i, psi_reading, kpa_reading                                                                                     
+    return psi_reading, kpa_reading                                                                                     
                   
 
 #---------------------------------------------------------------------------------------------------------------------#
 
 
 def main():
+    #img = "34.0.png" #comment out when running with rig 
+    get_digits() #take img out of parenthesis during press-rig 
    
-   get_digits()
-   #print(index, psi, kpa)
+   
 
 if __name__ == "__main__":
     main()
