@@ -44,6 +44,8 @@ cv2.imshow('Contours and Chessboard', img2)
 cv2.waitKey(0)
 
 
+'''Next step is to find pixel distances and compare'''
+
 
 # #apply thresholding
 # ret, mask = cv2.threshold(img2, 0, 255, cv2.THRESH_BINARY)
