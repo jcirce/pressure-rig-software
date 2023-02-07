@@ -12,6 +12,7 @@ cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("cannot open camera")
     exit()
+    
 f = open("psimap.txt", "a")
 
 counter = 0 #test only runs for set pressure amount

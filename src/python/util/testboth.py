@@ -35,8 +35,11 @@ dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in
 print("dir made for {}".format(dir))
-print("path")
-print(path)
+# print("path")
+# print(path)
+
+f = open("force_{}.txt".format(tube), "a")
+f.write("does this work")
 
 print("press spacebar to start") #sends 255 bit
 
@@ -64,8 +67,20 @@ while True:
         # print("press m to take photo")
 
     if k == 102: #f pressed
-        force = l.get_reading()
-        print("force is = {}".format(force))
+        # force = l.get_reading()
+        # print("force is = {}".format(force))
+        force = np.empty([10])
+        
+        for i in range(10):
+            force[i] = l.get_reading()
+
+        avg_force = np.average(force)
+
+        print("force is = {}".format(avg_force))
+        # f.write("{} raw \n".format(avg_force))
+        # print("recorded force reading")
+        
+
         print("press m to take photo")
 
 
