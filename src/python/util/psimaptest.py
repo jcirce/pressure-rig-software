@@ -21,7 +21,7 @@ photocounter = 0
 # bit = np.array([255, 200, 125,  90,  68,  55,  44,  35,  30,   25,   22,   18,   15,   14,   13,   12]) #16 commands 0-15 index
 # psi = np.array([1.7, 2.0, 3.1, 4.0, 5.1, 6.0, 7.0, 8.2, 9.1, 10.1, 10.9, 12.1, 13.2, 13.6, 14.2, 14.6])
 
-bit = np.linspace(12,112,101) #might cause error
+bit = np.linspace(0,100,101) #might cause error
 kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have
 
 #up = True #tracking if pressure increasing or not
