@@ -1,13 +1,13 @@
 import numpy as np
 import cv2
 from arduino_comms import CommsController
-# from loadcell import LoadCell
+from loadcell import LoadCell
 import os
 from setup import Tube
 
 c = CommsController() 
 cap = cv2.VideoCapture(0)
-# l = LoadCell()
+l = LoadCell()
 
 if not cap.isOpened():
     print("cannot open camera")
@@ -60,13 +60,13 @@ while True:
         c.append_command(bytes(s, 'UTF-8'))
         a = c.responseList.get()
         #print("sent command {}".format(a))
-        # print("press f to take force reading")
-        print("press m to take photo")
+        print("press f to take force reading")
+        # print("press m to take photo")
 
-    # if k == 102: #f pressed
-    #     force = l.get_reading()
-    #     print("force is = {}".format(force))
-    #     print("press m to take photo")
+    if k == 102: #f pressed
+        force = l.get_reading()
+        print("force is = {}".format(force))
+        print("press m to take photo")
 
 
     if k == 109: #m pressed
