@@ -1,11 +1,13 @@
 import numpy as np
 import cv2
 from arduino_comms import CommsController
+# from loadcell import LoadCell
 import os
 from setup import Tube
 
 c = CommsController() 
 cap = cv2.VideoCapture(0)
+# l = LoadCell()
 
 if not cap.isOpened():
     print("cannot open camera")
@@ -15,21 +17,26 @@ counter = 0 #test only runs for set pressure amount
 photocounter = 0 
 
 #these values from jan/11 map
-bit = np.array([255, 200, 125,  90,  68,  55,  44,  35,  30,   25,   22,   18,   15,   14,   13,   12]) #16 commands 0-15 index
-psi = np.array([1.7, 2.0, 3.1, 4.0, 5.1, 6.0, 7.0, 8.2, 9.1, 10.1, 10.9, 12.1, 13.2, 13.6, 14.2, 14.6])
+bit = np.array([255,    88,   61,   41,   30,   22,   16,   12,   11,   10,     9,     6,     4,     2,     1,     0]) 
+psi = np.array([1.7,   3.3,  4.4,  5.9,  7.2,  8.7, 10.3, 11.6, 12.0, 12.5,  13.0,  14.7,  16.0,  17.7,  18.8,  19.9])
+kpa = np.array([11.0, 22.8, 30.3, 40.7, 49.6, 60.0, 71.0, 80.0, 82.7, 86.2,  89.6, 101.4, 110.3, 122.0, 129.6, 137.2])
 
-kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have,                 15
+
+
+kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have, 15
 
 up = True #tracking if pressure increasing or not
 
 tube = Tube() #asks for name, number, test number
 print(tube)
 
-parent_dir = "/Users/student/desktop/pressure-rig-software/data"
+parent_dir = "/Users/student/desktop/pressure-rig-software/data-good"
 dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in
 print("dir made for {}".format(dir))
+print("path")
+print(path)
 
 print("press spacebar to start") #sends 255 bit
 
@@ -53,10 +60,17 @@ while True:
         c.append_command(bytes(s, 'UTF-8'))
         a = c.responseList.get()
         #print("sent command {}".format(a))
+        # print("press f to take force reading")
         print("press m to take photo")
 
+    # if k == 102: #f pressed
+    #     force = l.get_reading()
+    #     print("force is = {}".format(force))
+    #     print("press m to take photo")
+
+
     if k == 109: #m pressed
-        img_name = "{}_{}_psi{}.png".format(tube, photocounter, psi[counter])
+        img_name = "{}_{}_kPa{}.png".format(tube, photocounter, kpa[counter])
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
         print("press spacebar to change pressure")
