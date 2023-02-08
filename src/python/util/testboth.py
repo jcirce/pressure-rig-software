@@ -39,7 +39,7 @@ print("dir made for {}".format(dir))
 # print(path)
 
 f = open("force_{}.txt".format(tube), "a")
-f.write("does this work")
+# f.write("does this work")
 
 print("press spacebar to start") #sends 255 bit
 
@@ -75,12 +75,12 @@ while True:
             force[i] = l.get_reading()
 
         avg_force = np.average(force)
+        gram = round(0.000749711*avg_force + 0.75729)
 
-        print("force is = {}".format(avg_force))
-        # f.write("{} raw \n".format(avg_force))
-        # print("recorded force reading")
-        
-
+        print("force is = {} g".format(gram))
+        f.write("{} raw, {} g \n".format(avg_force, gram))
+        #print("recorded force reading")
+    
         print("press m to take photo")
 
 
@@ -108,5 +108,6 @@ while True:
         #press q to close camera
         break
 
+f.close()
 cap.release()
 cv2.destroyAllWindows()
