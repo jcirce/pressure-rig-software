@@ -17,10 +17,14 @@ counter = 0 #test only runs for set pressure amount
 photocounter = 0 
 
 #these values from isaiah's map 0-20psi
-bit = np.array([255,    88,   61,   41,   30,   22,   20,   18,   16,   14,   12,   11,   10,     9,     6,     4,     2,     1, 0]) 
-psi = np.array([1.7,   3.3,  4.4,  5.9,  7.2,  8.7,  9.2,  9.7, 10.3, 10.9, 11.6, 12.0, 12.5,  13.0,  14.7,  16.0,  17.7,  18.8, 19.9])
-kpa = np.array([11.0, 22.8, 30.3, 40.7, 49.6, 60.0, 63.4, 66.9, 71.0, 75.1, 80.0, 82.7, 86.2,  89.6, 101.4, 110.3, 122.0, 129.6, 137.2])
+# bit = np.array([255,    88,   61,   41,   30,   22,   20,   18,   16,   14,   12,   11,   10,     9,     6,     4,     2,     1, 0]) 
+# psi = np.array([1.7,   3.3,  4.4,  5.9,  7.2,  8.7,  9.2,  9.7, 10.3, 10.9, 11.6, 12.0, 12.5,  13.0,  14.7,  16.0,  17.7,  18.8, 19.9])
+# kpa = np.array([11.0, 22.8, 30.3, 40.7, 49.6, 60.0, 63.4, 66.9, 71.0, 75.1, 80.0, 82.7, 86.2,  89.6, 101.4, 110.3, 122.0, 129.6, 137.2])
 
+#0-30 reg limits
+bit = np.array([ 255,  120,  100,   70,   50,   40,   30,   25,   20,    13,    10,     7,     5,     4,     3,     2,     1, 0])
+psi = np.array([ 2.0,  3.8,  4.5,  6.0,  7.7,  9.0, 10.9, 12.2, 13.7,  16.9,  18.8,  21.0,  23.0,  24.1,  25.2,  26.6,  28.1, 29.7 ])
+kpa = np.array([13.8, 26.2, 31.0, 41.4, 53.1, 62.1, 75.2, 84.1, 94.5, 116.5, 129.6, 144.8, 158.6, 166.2, 173.7, 183.4, 193.7, 204.8 ])
 
 kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have, 15
 
@@ -29,7 +33,7 @@ up = True #tracking if pressure increasing or not
 tube = Tube() #asks for name, number, test number
 print(tube)
 
-parent_dir = "/Users/student/desktop/pressure-rig-software/data-best"
+parent_dir = "/Users/student/desktop/pressure-rig-software/data-fullsteps"
 dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in 
@@ -38,7 +42,7 @@ print("dir made for {}".format(dir))
 # print("path") 
 # print(path)
 
-f = open("force_{}.txt".format(tube), "a")
+#f = open("force_{}.txt".format(tube), "a")
 # f.write("does this work")
 
 print("press spacebar to start") #sends 255 bit
@@ -88,7 +92,7 @@ while True:
         img_name = "{}_{}_kPa{}.png".format(tube, photocounter, kpa[counter])
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
-        print("press spacebar to change pressure")
+        
         photocounter += 1
 
         if counter == kai: #reached max index
@@ -103,6 +107,20 @@ while True:
         if counter == 0 and up == False:
             print("test done")
             break
+
+        print("press o for no pressure")
+        #print("press spacebar to change pressure")
+
+    if k == 111: #o pressed
+        print("sending no kpa")
+        c.append_command(b"R0%\n")
+        s = f"S1,A{bit[0]}%\n" 
+        c.append_command(bytes(s, 'UTF-8'))
+        a = c.responseList.get()
+        
+        print("press spacebar to change pressure")
+
+
 
     if k == 113:
         #press q to close camera
