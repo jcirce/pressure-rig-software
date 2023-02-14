@@ -64,12 +64,6 @@ retleft, cornersleft = cv2.findChessboardCorners(resultBWinv, (5,4), None)
 
 
 #flip shape here for numpy 
-utils.pixel_distances(cornersright, (3,4,-1))
-utils.pixel_distances(cornersleft, (4,5,-1))
-
-# for i in range(cornersleft.shape[0]-1):
-#     point1 = cornersleft[i]
-#     point2 = cornersleft[i+1]
-#     dist = np.linalg.norm(point1 - point2)
-#     print(point1, point2, dist)
+right_dist = utils.pixel_distances(cornersright, (3,4,-1))
+left_dist = utils.pixel_distances(cornersleft, (4,5,-1))
 
