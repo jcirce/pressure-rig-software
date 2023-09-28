@@ -4,31 +4,58 @@ import pyftdi.gpio as gpio
 
 
 class LoadCell:
+    # DAT to AD2
+    # CLK to AD3
+
+    #second load cell
+    # DAT to AD4
+    # CLK to AD5
+
     def __init__(self):
         self.g = gpio.GpioAsyncController()
-        self.g.configure('ftdi:///1', direction=0b11111011)
+        self.g.configure('ftdi:///1', direction=0b11101011) # ad2 and 4 inputs
         self.g.set_frequency(100000)
-        self.datamask = int(0b00000100)
+        self.datamask =  int(0b00000100) #ad2 -> 3rd bit
+        self.datamask2 = int(0b00010000) #ad4-> 5th bit
         compare = self.datamask & self.g.read(peek=True)
         self.g.write(0b00000000)
         self.bitlength=24
 
     def get_reading(self):
-        print("waiting for hx711 rdy...")
+        #print("waiting for hx711 rdy...")
         while self.datamask & self.g.read(peek=True):
             pass
             # print(",",end=" ") # Print .... while waiting for reading
         data = 0
         for i in range(self.bitlength+1):
-            hi = 0b00001000
+            hi = 0b00001000 #ad3-> 4th bit
             low = 0b00000000
             bytesequence = [hi,low]
             self.g.write(bytesequence) # Write hi then low at frequency so hx711 doesn't go to sleep
             # Read the 24 bits from hx711, bit shift properly
             if(i<24):
-                data = data | self.g.read(peek=True) >> 2 << (self.bitlength - 1 - i)
+                data = data | self.g.read(peek=True) >> 2 << (self.bitlength - 1 - i) 
 
         return LoadCell.twos_comp(data,self.bitlength)
+    
+    #for the second load cell
+    def get_reading2(self):
+        #print("waiting for hx711 rdy...")
+        while self.datamask2 & self.g.read(peek=True):
+            pass
+            # print(",",end=" ") # Print .... while waiting for reading
+        data = 0
+        for i in range(self.bitlength+1):
+            hi = 0b00100000 #ad5 -> 6th bit
+            low = 0b00000000 
+            bytesequence = [hi,low]
+            self.g.write(bytesequence) # Write hi then low at frequency so hx711 doesn't go to sleep
+            # Read the 24 bits from hx711, bit shift properly
+            if(i<24):
+                data = data | self.g.read(peek=True) >> 4 << (self.bitlength - 1 - i) #try shift 4 first perhspapspspsp
+
+        return LoadCell.twos_comp(data,self.bitlength)
+    
 
     @staticmethod
     def twos_comp(val, bits):
@@ -39,7 +66,7 @@ class LoadCell:
 
 if __name__ == "__main__":
     l = LoadCell()
-    # from time import sleep
+    from time import sleep
     # while True:
     #     print(l.get_reading())
     #     sleep(0.01)
@@ -47,12 +74,17 @@ if __name__ == "__main__":
     f = open("loadcellreadings.txt", "a")
 
     while True:
-        g = input("enter g: ")
+        # g = input("enter g: ") # g is for grams applied
 
-        for i in range(100):
-            force = l.get_reading()
-            f.write("{} g, {} raw \n".format(g, force))
-            print("force is = {}".format(force))
+        # for i in range(100):
+        forcex = l.get_reading()
+        forcey = l.get_reading2()
+        # f.write("{} g, {} raw in x, {} raw in y \n".format(g, forcex, forcey))
+        print("force is = {} in x and {} in y".format(forcex, forcey))
+        sleep(0.01)
+        
+
+        
 
 
 
