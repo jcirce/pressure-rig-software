@@ -13,7 +13,7 @@ l = LoadCell()
 #     print("cannot open camera")
 #     exit()
 
-# counter = 0 #test only runs for set pressure amount
+counter = 0 #test only runs for set pressure amount
 # photocounter = 0 
 
 # #these values from isaiah's map 0-20psi
@@ -34,7 +34,12 @@ l = LoadCell()
 
 # kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have, 15
 
-# up = True #tracking if pressure increasing or not
+up = True #tracking if pressure increasing or not
+bit = np.array([0,   102, 204, 306, 408, 510, 612, 714, 816, 918, 1020, 1122, 1224, 1326, 1428, 1530, 1632, 1734, 1836, 1938])
+psi = np.array([0.1, 1.1, 2.2, 3.1, 4.1, 5.1, 6.2, 7.2, 8.2, 9.2, 10.2, 11.2, 12.2, 13.3, 14.2, 15.3, 16.3, 17.3, 18.3, 19.3])
+
+kai = np.size(bit) - 1 #times want to take readings
+
 
 tube = Tube() #asks for name, number, test number
 print(tube)
@@ -55,24 +60,72 @@ print("press spacebar to start") #sends 255 bit
 
 while True:
 
-    current_pressure = input("enter pressure [psi]")
-    # print(current_pressure)
-    if current_pressure == "end":
+    oktomoveon = input("input command should be {}, pressure should be {}".format(bit[counter], psi[counter]))
+
+    if oktomoveon == "s": #skip
+        counter += 1 #increasing pressure
+
+    if oktomoveon == "y":
+        # current_pressure = input("current pressure")
+        force = np.empty([20])
+    
+        for i in range(20):
+            if l.get_reading2() < 30000000:
+                force[i] = l.get_reading2()
+
+        avg_force = np.average(force)
+        gram =  0.0008765*avg_force - 104.0278067 #9/30 cal
+        # gram = round(0.0007530200*avg_force - 0.3232482670) # new calibration
+        #gram = round(0.000749711*avg_force + 0.75729) old calibration
+
+        print("force is = {} g".format(round(gram)))
+        f.write("{}, {}, {}, {}\n".format(bit[counter], psi[counter], avg_force, gram))
+        # print("recorded force reading")
+
+
+        if counter == kai: #reached max index
+            up = False
+            print("now going backwards")
+
+        if up:
+            counter += 1 #increasing pressure
+        else:
+            counter -= 1 #decrease pressure
+        
+        if counter == 0 and up == False:
+            shouldweend = input("ok to save data?")
+            if shouldweend == "end":
+                f.close()
+                break
+
+    if oktomoveon == "down":
+        up = False
+        counter -= 1
+
+    if oktomoveon == "end":
         f.close()
         break
+            
 
-    force = np.empty([10])
-    
-    for i in range(10):
-        force[i] = l.get_reading()
 
-    avg_force = np.average(force)
-    gram = round(0.0007530200*avg_force - 3.3232482670) # new calibration
-    #gram = round(0.000749711*avg_force + 0.75729) old calibration
+# current_pressure = input("enter pressure [psi]")
+# # print(current_pressure)
+# if current_pressure == "end":
+#     f.close()
+#     break
 
-    print("force is = {} g".format(gram))
-    f.write("{} PSI, {} raw, {} g \n".format(current_pressure, avg_force, gram))
-    # print("recorded force reading")
+# force = np.empty([100])
+
+# for i in range(100):
+#     force[i] = l.get_reading()
+
+# avg_force = np.average(force)
+# gram = round(0.0007530200*avg_force - 3.3232482670) # new calibration
+# #gram = round(0.000749711*avg_force + 0.75729) old calibration
+
+# print("force is = {} g".format(gram))
+# f.write("{} PSI, {} raw, {} g \n".format(current_pressure, avg_force, gram))
+# # print("recorded force reading")
 
 
 

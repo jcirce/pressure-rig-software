@@ -27,19 +27,23 @@ photocounter = 0
 # kpa = np.array([13.8, 26.2, 31.0, 41.4, 53.1, 62.1, 75.2, 84.1, 94.5, 116.5, 129.6, 144.8, 158.6, 166.2, 173.7, 183.4, 193.7, 204.8 ])
 
 #0-37 reg limits
-bit = np.array([255,   150,   60,   35,    25,    20,    15,    12,    10,     8,     6,     5,     4,     3,     2,     1, 0])
-psi = np.array([2.4,   3.9,  8.3, 12.2,  15.0,  17.1,  19.7,  21.7,  23.2,  25.1,  27.2,  28.4,  29.9,  31.3,  33.0,  34.8,  36.9])
-kpa = np.array([16.5, 26.9, 57.2, 84.1, 103.4, 117.9, 135.8, 149.6, 160.0, 173.1, 187.5, 195.8, 206.1, 215.8, 227.5, 239.9, 254.4])
+# bit = np.array([255,   150,   60,   35,    25,    20,    15,    12,    10,     8,     6,     5,     4,     3,     2,     1, 0])
+# psi = np.array([2.4,   3.9,  8.3, 12.2,  15.0,  17.1,  19.7,  21.7,  23.2,  25.1,  27.2,  28.4,  29.9,  31.3,  33.0,  34.8,  36.9])
+# kpa = np.array([16.5, 26.9, 57.2, 84.1, 103.4, 117.9, 135.8, 149.6, 160.0, 173.1, 187.5, 195.8, 206.1, 215.8, 227.5, 239.9, 254.4])
+
+#new sept 2023
+bit = np.array([0,   102, 204, 306, 408, 510, 612, 714, 816, 918, 1020, 1122, 1224, 1326, 1428, 1530, 1632, 1734, 1836, 1938, 2040, 2142, 2244, 2346])#, 2448, 2550, 2652, 2754])#, 2856, 2958, 3060, 3162, 3264, 3366, 3468, 3570])
+psi = np.array([0.1, 1.1, 2.2, 3.1, 4.1, 5.1, 6.2, 7.2, 8.2, 9.2, 10.2, 11.2, 12.2, 13.3, 14.2, 15.3, 16.3, 17.3, 18.3, 19.3, 20.3, 21.3, 22.3, 23.3])#, 24.4, 25.4, 26.4, 27.4, 28.4, 29.4, 30.5, 31.5, 32.5, 33.5, 34.5, 35.5])
 
 
-kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have, 15
+kai = np.size(bit) - 1 #times want to take photos, twice number of bit commands we have,
 
 up = True #tracking if pressure increasing or not
 
 tube = Tube() #asks for name, number, test number
 print(tube)
 
-parent_dir = "/Users/student/desktop/pressure-rig-software/data-highp"
+parent_dir = "/Users/student/desktop/pressure-rig-software/curvature-data-sept"
 dir = str(tube) #makes sure its a string
 path = os.path.join(parent_dir, dir)
 os.mkdir(path) #makes dir for photos to go in 
@@ -67,35 +71,26 @@ while True:
     #print(k) #prints int of key pressed
 
     if k == 32: #space pressed
-        print("sending {} psi".format(psi[counter]))
-        c.append_command(b"R0%\n")
-        s = f"S1,A{bit[counter]}%\n" 
-        c.append_command(bytes(s, 'UTF-8'))
-        a = c.responseList.get()
+        # print("sending {} psi".format(psi[counter]))
+        # c.append_command(b"R0%\n")
+        # s = f"S1,A{bit[counter]}%\n" 
+        # c.append_command(bytes(s, 'UTF-8'))
+        # a = c.responseList.get()
+        print("input command should be {}, pressure should be {}".format(bit[counter], psi[counter]))
         #print("sent command {}".format(a))
         #print("press f to take force reading")
         print("press m to take photo")
 
-    # if k == 102: #f pressed
-    #     # force = l.get_reading()
-    #     # print("force is = {}".format(force))
-    #     force = np.empty([10])
-        
-    #     for i in range(10):
-    #         force[i] = l.get_reading()
 
-    #     avg_force = np.average(force)
-    #     gram = round(0.000749711*avg_force + 0.75729)
+    if k == "111": #o pressed
+        counter = kai
+        up = False
+        print("now going backwards")
 
-    #     print("force is = {} g".format(gram))
-    #     f.write("{} kpa, {} raw, {} g \n".format(kpa[counter], avg_force, gram))
-    #     #print("recorded force reading")
-    
-        #print("press m to take photo")
 
 
     if k == 109: #m pressed
-        img_name = "{}_{}_kPa{}.png".format(tube, photocounter, kpa[counter])
+        img_name = "{}_{}_PSI{}.png".format(tube, photocounter, psi[counter])
         cv2.imwrite(os.path.join(path, img_name), frame)
         print("{} written".format(img_name))
         
@@ -114,17 +109,17 @@ while True:
             print("test done")
             break
 
-        print("press o for no pressure")
-        #print("press spacebar to change pressure")
+        # print("press o for no pressure")
+        print("press spacebar to move on")
 
-    if k == 111: #o pressed
-        print("sending no kpa")
-        c.append_command(b"R0%\n")
-        s = f"S1,A{bit[0]}%\n" 
-        c.append_command(bytes(s, 'UTF-8'))
-        a = c.responseList.get()
+    # if k == 111: #o pressed
+    #     print("sending no kpa")
+    #     c.append_command(b"R0%\n")
+    #     s = f"S1,A{bit[0]}%\n" 
+    #     c.append_command(bytes(s, 'UTF-8'))
+    #     a = c.responseList.get()
         
-        print("press spacebar to change pressure")
+    #     print("press spacebar to change pressure")
 
 
 

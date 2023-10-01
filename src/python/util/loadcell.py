@@ -73,15 +73,21 @@ if __name__ == "__main__":
 
     f = open("loadcellreadings.txt", "a")
 
-    while True:
-        # g = input("enter g: ") # g is for grams applied
+    # while True:
+    g = input("enter g: ") # g is for grams applied
 
-        # for i in range(100):
-        forcex = l.get_reading()
-        forcey = l.get_reading2()
-        # f.write("{} g, {} raw in x, {} raw in y \n".format(g, forcex, forcey))
-        print("force is = {} in x and {} in y".format(forcex, forcey))
-        sleep(0.01)
+    for i in range(100):
+        forcey = l.get_reading()
+        forcex = l.get_reading2()
+
+        if forcex < 30000000 and forcey < 30000000:
+            f.write("{}, {}\n".format(g, forcex))
+            print("raw is = {} in x and {} in y".format(forcex, forcey))
+        
+    f.close()
+
+    
+    
         
 
         
