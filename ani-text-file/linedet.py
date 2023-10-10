@@ -6,26 +6,23 @@ import random
 
 from matplotlib import pyplot as plt
 
-#cropping done manually right now, not so great to be doing it this way 
-def crop(img):
-    cropimg = img[0:900, 200:900]
-    return cropimg
-
-testfold = 'pressure-rig-software/bluelinephotos\s402_1/'  # folder with images
-for path in os.listdir(testfold): # iterates over all the files in a directory
+# choose the correct folder
+testfold = 'bluelinephotos\s501_1/'
+# iterates over all the files in a directory
+for path in os.listdir(testfold): 
     testimpath = testfold+path
     print('Analyzing: ' + testimpath)
 
-    split1 = testfold.split("/")
-    split2 = split1[1].split('\\')
-    test = split2[1] + ' curvature data'
+    split1 = testfold.split('\\')
+    test = split1[1]
     print('Output Text File: ' + test)
 
     #crop and change colorspace
     img = cv2.imread(testimpath, cv2.IMREAD_UNCHANGED)
-    # img = crop(img)
-    # angle = 0
+    
     height, width = img.shape[:2]
+    # rotation:
+    # angle = 0
     # rot_matrix = cv2.getRotationMatrix2D((width / 2, height / 2), angle, 1)
     # rot_img = cv2.warpAffine(img, rot_matrix, (width, height))
 
@@ -35,23 +32,16 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     pxl_cm_y = height/screen_y
     print(width)
     print(pxl_cm_x)
-    # resize_img = rot_img.resize(n_width, n_height)
 
-    #img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # converts cropped image to gray scale
-    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # converts cropped image to gray scale
 
     #apply thresholding
-    #ret, mask = cv2.threshold(img2, 180, 255, cv2.THRESH_BINARY)
-    ret, mask = cv2.threshold(img2, 80, 255, cv2.THRESH_BINARY)
-    # threshold of 30 is good for the black marker on blue, but needs experimenting
-    # cuz it cuts out a lot of the data
-    # threshold of 80 is good for the blue marker on white
-    # threshold of 100 is good for multiple colors to break off the sections
-    # but can't necessarily isolate different colors yet
-
-        # ret = 127 (threshold value)
-        # mask = the img2 converted to a binary
-
+    ret, mask = cv2.threshold(img2, 55, 255, cv2.THRESH_BINARY)
+    # threshold value: (-, thresh, -, cv2.THRESH_BINARY)
+    # black marker on blue: 55
+    # black marker on pink: 55
+    # black marker on white: 80
+    
     #find contours
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         # contours --> (x,y) coords, list of contours found, each contour is a list of points
@@ -62,6 +52,7 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     mask2 = mask.copy()
     mask3 = cv2.drawContours(mask2, contours, -1, (0,255,0), 10)
 
+    # This shows the steps of converting from original image to final
     # plt.subplot(2,2,1)
     # plt.imshow(img) 
     # plt.subplot(2,2,2)
@@ -72,9 +63,11 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     # plt.imshow(mask3)
     # plt.show()
 
-    plt.figure()
-    plt.imshow(mask)
-    plt.show()
+    # This prints every photo in file in the converted version
+    # plt.figure()
+    # plt.imshow(mask)
+    # plt.title(path)
+    # plt.show()
 
     x = []
     y = []
@@ -93,20 +86,6 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     x = x[4::]
     y = y[4::]
 
-    # print('min x: ' + str(min(x)))
-    # print('max x: ' + str(max(x)))
-    # print('min y: ' + str(min(y)))
-    # print('max y: ' + str(max(y)))
-
-    # print('length x: ' + str(len(x)))
-    # print('length y: ' + str(len(y)))
-    # print("Number of Contours found = " + str(len(contours)))
-
-    # x_1 = [x[500], x[1000], x[1500], x[2000], x[2500], x[3000], x[3500]]
-    # y_1 = [y[500], y[1000], y[1500], y[2000], y[2500], y[3000], y[3500]]
-
-    # print(x_1)
-    # print(y_1)
     x = np.array(x, dtype=np.int64)
     y = np.array(y, dtype=np.int64)
 
@@ -114,20 +93,21 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     # print(min(xy))
     # print(max(xy))
 
-
     xy = np.array(xy, dtype=np.int64)
     sort_XY = np.argsort(xy[:, 0])
     xy = xy[sort_XY]
     #print(xy)
 
+    # break up the contour line into three sets of x values
     length = len(xy)//3
-
     xy_1 = xy[0:length]
     xy_2 = xy[length:2*length]
     xy_3 = xy[2*length::]
 
     curvature = []
 
+    # randomely pick 1 number per set to calculate curvature
+    # repeat 100 times, and take average
     for i in range(0,100):
         one = random.randint(0, length-1)
         two = random.randint(0, length-1)
@@ -142,5 +122,6 @@ for path in os.listdir(testfold): # iterates over all the files in a directory
     # print(max(curvature))
     # print(curvature_avg)
 
-    with open(test, 'a') as file:
+    # record results in output text file (change the name to what you want the output file to have, and correct folder)
+    with open("ani-text-file/curvature_data\s501_1.txt", 'a') as file:
         file.write("File: " + path + " Curvature: "+ str(curvature_avg) + "\n")
